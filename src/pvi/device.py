@@ -10,6 +10,7 @@ from typing import (
     Annotated,
     Any,
     ClassVar,
+    Union,
 )
 
 from pydantic import (
@@ -191,6 +192,7 @@ class TextWrite(WriteWidget):
 
     lines: int | None = Field(default=None, description="Number of lines to display")
     format: TextFormat | None = Field(default=None, description="Display format")
+    widget: Union[WriteWidgetUnion, ReadWidgetUnion] | None = Field(default=None, description="TEST")
 
     def get_lines(self):
         return self.lines or 1
@@ -443,7 +445,7 @@ class Device(TypedModel, YamlValidatorMixin):
 
     label: str = Field(description="Label for screen")
     parent: Annotated[str, "The parent device (basename of yaml file)"] | None = None
-    children: Tree = Field([], description="Child Components")
+    children: Tree = Field([], description="Child Components") # type: ignore
 
     def _to_dict(self) -> dict[str, Any]:
         """Serialize a `Device` instance to a `dict`.
